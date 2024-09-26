@@ -10,7 +10,7 @@ int main() {
 	int max;
 	max = 0;
 
-	while(fgets(line,100,stdin) != NULL) {
+	while(gets(line) != NULL) {
 		len = strlen(line);
 
 		if(len > max) {
@@ -20,7 +20,7 @@ int main() {
 	}
 	
 	if(max > 0)
-		printf("%s \n", longest);
+		printf("%s\n", longest);
 
 	return 0;
 }
