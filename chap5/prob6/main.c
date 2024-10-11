@@ -17,4 +17,16 @@ int main(int argc, char *argv[]) {
 		exit(2);
 	}
 	do {
-
+		printf("\Enter StudentID to serach:");
+		if (scanf("%d", &id) == 1) {
+			lseek(fd, (id-START_ID)*sizeof(record), SEEK_SET);
+			if((read(fd, (char *) &record, sizeof(record)) > 0) && (record.id != 0))
+				printf("Name:%s\t StuID:%d\t Score:%d\n", record.name, record.id, record.score);
+			else printf("Record %d Null\n", id);
+		} else printf("Input Error");
+		printf("Continue?(Y/N)");
+		scanf(" %c", &c);
+	} while(c == 'Y');
+	close(fd);
+	exit(0);
+}
