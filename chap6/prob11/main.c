@@ -118,4 +118,3 @@ char* perm(mode_t mode) {
     }
     return(perms);
 }
-
