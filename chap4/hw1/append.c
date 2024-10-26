@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int main(int argc, char *argv[])
 {
    char c;
@@ -23,11 +24,12 @@ int main(int argc, char *argv[])
    }
 
    while ((c = fgetc(fp1)) != EOF) {
-      fputc(c, fp2);
+	   if(c != '\0') {
+		   fputc(c, fp2);
+	   }
    }
 
    fclose(fp1);
    fclose(fp2);
    return 0;
 }
-
