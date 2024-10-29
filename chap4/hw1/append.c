@@ -1,35 +1,49 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char *argv[])
 {
-   char c;
-   FILE *fp1, *fp2;
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <file1> <file2>\n", argv[0]);
+        return 1;
+    }
 
-   if (argc != 3) {
-      fprintf(stderr, "How to use: %s File1 File2\n", argv[0]);
-      return 1;
-   }
+    FILE *file1, *file2;
+    char line[1024];
+    char content[2048] = "";
 
-   fp1 = fopen(argv[1], "r");
-   if (fp1 == NULL) {
-      fprintf(stderr, "File %s Open Error\n", argv[1]);
-      return 2;
-   }
+    file2 = fopen(argv[2], "r");
+    if (file2 == NULL) {
+        perror("Error opening file2");
+        return 1;
+    }
 
-   fp2 = fopen(argv[2], "a");
-   if (fp2 == NULL) {
-      fprintf(stderr, "File %s Open Error\n", argv[2]);
-      fclose(fp1);
-      return 3;
-   }
+    while (fgets(line, sizeof(line), file2) != NULL) {
+        line[strcspn(line, "\n")] = '\0';
+        strcat(content, line);
+    }
+    fclose(file2);
 
-   while ((c = fgetc(fp1)) != EOF) {
-	   if(c != '\0') {
-		   fputc(c, fp2);
-	   }
-   }
+    file1 = fopen(argv[1], "r");
+    if (file1 == NULL) {
+        perror("Error opening file1");
+        return 1;
+    }
 
-   fclose(fp1);
-   fclose(fp2);
-   return 0;
+    while (fgets(line, sizeof(line), file1) != NULL) {
+        line[strcspn(line, "\n")] = '\0';
+        strcat(content, line);
+    }
+    fclose(file1);
+
+    file2 = fopen(argv[2], "w");
+    if (file2 == NULL) {
+        perror("Error opening file2 for writing");
+        return 1;
+    }
+    fprintf(file2, "%s", content);
+    fclose(file2);
+
+    return 0;
 }
